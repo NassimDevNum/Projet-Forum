@@ -1,0 +1,25 @@
+<?php
+auth(2);
+if(isset($_GET['id_user']) AND !empty($_GET['id_user']))
+{
+    $getid= $_GET['id_user'];
+    $recupUser = $bdd->prepare('SELECT * FROM user WHERE id_user = ?');
+    $recupUser->execute(array($getid)); //recupere dans user l'utilisateur qui à pour id le getid
+    if($recupUser->rowCount() > 0){ //si le recup user n'est pas vide on execute le code
+
+        //on crée le system pour bani les users
+        $bannirUser = $bdd->prepare('DELETE FROM user WHERE id_user = ?');
+        $bannirUser->execute(array($getid));
+
+        header('Location: vueAdmin.php');
+
+    }else  // si non 
+    {
+        echo "aucun utilisateur n'a été trouvé ";    //on execute un message d'erreur
+    }
+}
+else
+{
+    echo "l'identifiant n'a pas été récupéré";
+}
+?>
